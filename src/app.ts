@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
   msg = signal("Init");
 
   async ngOnInit(): Promise<void> {
-    await updateMessage(this.msg);
+    this.msg.set(await getMessageData());
   }
 
   increment() {
@@ -33,7 +33,8 @@ export class AppComponent implements OnInit {
   }
 }
 
-const updateMessage = async (msg: WritableSignal<string>) => {
+const getMessageData = async () => {
   const data = await fetch("/api/v1/hello");
-  msg.set((await data.json()).message);
+  const message = (await data.json()).message;
+  return message;
 };

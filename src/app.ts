@@ -1,12 +1,12 @@
-import { Component, signal } from "@angular/core";
-
+import { Component, signal, OnInit, WritableSignal } from "@angular/core";
 @Component({
-  selector: 'app-root',
+  selector: "app-root",
   standalone: true,
   template: `
     <h2>Vite + Angular</h2>
+    <h2>{{ msg() }}</h2>
 
-    <br /><br/>
+    <br /><br />
 
     <button (click)="increment()">Count {{ count() }}</button>
   `,
@@ -18,12 +18,22 @@ import { Component, signal } from "@angular/core";
       align-items: center;
       width: 100%;
     }
-  `
+  `,
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   count = signal(0);
+  msg = signal("Init");
+
+  async ngOnInit(): Promise<void> {
+    await updateMessage(this.msg);
+  }
 
   increment() {
-    this.count.update(cnt => ++cnt);
+    this.count.update((cnt) => ++cnt);
   }
 }
+
+const updateMessage = async (msg: WritableSignal<string>) => {
+  const data = await fetch("/api/v1/hello");
+  msg.set((await data.json()).message);
+};

@@ -1,15 +1,14 @@
-import { defineConfig } from 'vite';
-import angular from '@analogjs/vite-plugin-angular';
+import { defineConfig } from "vite";
+import angular from "@analogjs/vite-plugin-angular";
+import nitro from "@analogjs/vite-plugin-nitro";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   build: {
-    target: ['es2020'],
+    target: ["es2020"],
   },
   resolve: {
-    mainFields: ['module'],
+    mainFields: ["module"],
   },
-  plugins: [
-    angular()
-  ],
+  plugins: [angular(), nitro()],
 }));
